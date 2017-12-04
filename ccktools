@@ -1,0 +1,137 @@
+#!/bin/bash
+error_flag=0
+
+ccktools_download(){
+	if [[ -d "dependencies" ]]; then
+		echo "------ "
+		echo "------ las dependencias ya se habían descargado"
+		echo "------ para volver a descargarlas, ejecute de nuevo este script"
+		echo "------ "
+	fi
+	if [[ ! -d "dependencies" ]]; then
+		echo "------ "
+		echo "------ descargando dependencias"
+		echo "------ "
+		mkdir dependencies
+		git clone https://github.com/amazfitbip/tools.git dependencies/amazfitbip/tools
+		chmod +x dependencies/*.py
+	fi
+	if [[ ! -d "watchfaces" ]]; then
+		mkdir watchfaces
+	fi
+}
+
+ccktools_delete(){
+	echo "------ "
+	echo "------ borrando dependencias"
+	echo "------ "
+	rm -fr tools
+	rm -fr dependencies
+}
+
+ccktools_reinstall(){
+	ccktools_delete
+	ccktools_download
+}
+
+ccktools_newproject(){
+clear
+  echo "escribe el nombre del archivo:"
+  read key
+  echo ${key}
+  nombredelarchivo=${key}
+  if [[ ! -f watchfaces/${nombredelarchivo} ]]; then
+  	echo "no existe"
+  	exit
+  	break
+  fi
+  fullname=$(basename "${nombredelarchivo}")
+  extension="${fullname##*.}"
+  filename="${fullname%.*}"
+  if [[ ${extension} == 'bin' ]]; then
+    echo "----------------"
+    echo "--- BIN MODE ---"
+    echo "----------------"
+    workingtype='bin'
+  elif [[ ${extension} == 'res' ]]; then
+    echo "----------------"
+    echo "--- RES MODE ---"
+    echo "----------------"
+    echo "--- NO SOPORTADO"
+    workingtype='res'
+    exit
+    break
+  fi
+  echo "-----"
+  echo "----- ${fullname} "
+  filedir=watchfaces/build_${filename}/${workingtype}
+  echo "----- ${filedir} "
+  if [[ ! -d ${filedir} ]]; then
+    echo "----- Creando ${filedir}"
+    mkdir -p ${filedir}/
+    mv watchfaces/${fullname} ${filedir}/
+    cp dependencies/amazfitbip/tools/dial2img.py ${filedir}/
+    echo "#!/bin/bash
+./dial2img.py -u -i ${fullname}" >> ${filedir}/descompilar
+    echo "#!/bin/bash
+current_time=\$(\date \"+%Y.%m.%d-%H.%M.%S\")
+./dial2img.py -i ${fullname} -p
+echo \"renombrado a ${filename}_\${current_time}.${extension}\"
+mv ${fullname}.new ${filename}_\${current_time}.${extension}" >> ${filedir}/compilar
+    chmod +x ${filedir}/dial2img.py
+    chmod +x ${filedir}/descompilar
+    chmod +x ${filedir}/compilar
+  else
+    echo "----- Ya existe /${filedir}, prueba otro nombre, o renombra el existente"
+  fi
+  echo "-----"
+  echo "----------------"
+  echo ""
+  echo ""
+  echo ""
+  cd ${filedir}
+  open .
+  ./descompilar
+}
+
+ccktools_help(){
+	clear
+	echo "------------------------------------------------------------------------------ "
+	PS3='Escoge tu opción: '
+	options=("Descargar dependencias" "Borrar dependencias" "Borrar y descargar de nuevo las dependencias" "Empezar nuevo proyecto" "Quit")
+	select opt in "${options[@]}"
+	do
+	    case $opt in
+	        "Descargar dependencias")
+	            echo "Descargando dependencias"
+							ccktools_download
+	            break
+	            ;;
+	        "Borrar dependencias")
+	            echo "Borrando dependencias"
+							ccktools_delete
+	            break
+	            ;;
+	        "Borrar y descargar de nuevo las dependencias")
+	            echo "Reinstalando dependencias"
+							ccktools_reinstall
+	            break
+	            ;;
+	        "Empezar nuevo proyecto")
+	            echo "Creando nuevo proyecto"
+							ccktools_newproject
+	            break
+	            ;;
+	        "Quit")
+	            break
+	            ;;
+	        *) echo invalid option;;
+	    esac
+	done
+}
+ccktools_help
+
+
+
+
+
