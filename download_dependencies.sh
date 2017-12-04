@@ -34,7 +34,7 @@ ccktools_download(){
 		echo "------ descargando dependencias"
 		echo "------ "
 		mkdir dependencies
-		git clone https://github.com/amazfitbip/tools.git dependencies
+		git clone https://github.com/amazfitbip/tools.git dependencies/amazfitbip/tools
 		chmod +x dependencies/*.py
 	fi
 	if [[ ! -d "watchfaces" ]]; then
