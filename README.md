@@ -1,0 +1,1 @@
+# amazfit-ccktools
