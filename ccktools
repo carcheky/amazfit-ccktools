@@ -36,10 +36,11 @@ ccktools_reinstall(){
 
 ccktools_newproject(){
 clear
-  echo "escribe el nombre del archivo:"
-  read key
-  echo ${key}
-  nombredelarchivo=${key}
+  echo "Buscando archivos bin en la carpeta watchfaces (solo trabajaré con el primero que encuentre)"
+  cd watchfaces
+  nombredelarchivo=(*.bin)
+  echo ${nombredelarchivo[0]} 
+  cd ..
   if [[ ! -f watchfaces/${nombredelarchivo} ]]; then
   	echo "no existe"
   	exit
@@ -75,9 +76,15 @@ clear
 ./dial2img.py -u -i ${fullname}" >> ${filedir}/descompilar
     echo "#!/bin/bash
 current_time=\$(\date \"+%Y.%m.%d-%H.%M.%S\")
+if [[ ! -d old ]]; then
+	mkdir old		
+fi
+mv ${filename}_*.bin old
 ./dial2img.py -i ${fullname} -p
 echo \"renombrado a ${filename}_\${current_time}.${extension}\"
-mv ${fullname}.new ${filename}_\${current_time}.${extension}" >> ${filedir}/compilar
+mv ${fullname}.new ${filename}_\${current_time}.${extension}
+adb push ${filename}_${current_time}.bin /sdcard/Download/
+" >> ${filedir}/compilar
     chmod +x ${filedir}/dial2img.py
     chmod +x ${filedir}/descompilar
     chmod +x ${filedir}/compilar

@@ -1,45 +1,5 @@
-clear
-  rm -fr watchfaces/build-carcheky_959
-  rm -fr watchfaces/build_carcheky_959
-    echo "escribe el nombre del archivo:"
-    read key
-    echo ${key}
-    nombredelarchivo=${key}
-  fullname=$(basename "${nombredelarchivo}")
-  extension="${fullname##*.}"
-  filename="${fullname%.*}"
-  if [[ ${extension} == 'bin' ]]; then
-    echo "----------------"
-    echo "--- BIN MODE ---"
-    echo "----------------"
-    workingtype='bin'
-  elif [[ ${extension} == 'res' ]]; then
-    echo "----------------"
-    echo "--- RES MODE ---"
-    echo "----------------"
-    workingtype='res'
-  fi
-  echo "-----"
-  echo "----- ${fullname} "
-  filedir=watchfaces/build_${filename}/${workingtype}
-  echo "----- ${filedir} "
-  if [[ ! -d ${filedir} ]]; then
-    echo "----- Creando ${filedir}"
-    mkdir -p ${filedir}/
-    cp watchfaces/${fullname} ${filedir}/
-    cp dependencies/amazfitbip/tools/dial2img.py ${filedir}/
-    echo "./dial2img.py -u -i $1" >> ${filedir}/descompilar
-    echo "./dial2img.py -i $1 -p" >> ${filedir}/compilar
-    chmod +x ${filedir}/dial2img.py
-    chmod +x ${filedir}/descompilar
-    chmod +x ${filedir}/compilar
-  else
-    echo "----- Ya existe /${filedir}, prueba otro nombre, o renombra el existente"
-  fi
-  echo "-----"
-  echo "----------------"
-  echo ""
-  echo ""
-  echo ""
-  echo "-"
-  echo "FIN"
+#!/bin/bash
+cd watchfaces
+nombredelarchivo=(*.bin)
+echo ${nombredelarchivo[0]} 
+cd ..
