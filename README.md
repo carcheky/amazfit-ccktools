@@ -1,4 +1,4 @@
-### `trabajando en simplificar el proceso`
+### `trabajando en un proceso mas simple`
 
 
 
