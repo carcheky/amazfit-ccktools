@@ -1,5 +1,1 @@
 #!/bin/bash
-cd watchfaces
-nombredelarchivo=(*.bin)
-echo ${nombredelarchivo[0]} 
-cd ..

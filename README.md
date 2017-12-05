@@ -1,26 +1,19 @@
 # amazfit-ccktools
 
 
-‼️ COMPILAR Y DESCOMPILAR ARCHIVOS .BIN Y .RES ‼️
+Ejecutando el commando `./ccktools` podrá descargar/reinstalar las dependencias necesarias
 
-1. Para descompilar y compilar archivos necesitaremos la herramienta Python 2.7. Puedes descargarla desde la página oficial.
 
-2. Para los archivos .RES necesitaremos el archivo res2img.py (Necesitamos que se encuentr en la misma carpeta de la raíz donde se encuentre Python).
+Una vez añadido un .bit a la carpeta `watchfaces`, ejecutar el comando `./ccktools' y usar la opción `4` para generar un nuevo proyecto dentro de la carpeta `watchfaces`
 
-3. Abriremos la ventana de comandos con: Windows+R, escribiremos cmd y daremos enter. Una vez dentro:
+Cualquiera de estos proyectos debería funcionar de forma independiente, sin necesidad de estar dentro de watchfaces.
 
-4. Escribiremos:    cd C:\Python27
 
-5. Y luego: Python.exe res2img.py –i zyt.res –u  (siendo ZYT el nombre de mi archivo)
+Al crearse un proyecto nuevo, se genera una carpeta con el bin descomprimido (donde editar las imágennes)
 
-6. Se nos creará una carpeta con los múltiples archivos de ese .res
+Una vez editadas las imágenes, en el terminal, navegar hasta la carpeta donde se encuentra el archivo `compilar` y ejecutar `./compilar`.
 
-7. Una vez acabado el proceso de edición volveremos a compilar el archivo con el comando: python.exe res2img.py –i zyt.res –p
 
-—------------------—
+Si tienes adb (tambien funciona con adb sobre red si antes te conectas con `adb connect ip:port` y estás conectado a tu teléfono, copiará el nuevo archivo directamente a tu teléfono usando adb push `adb push nombre_del_bin_.bin /sdcard/Download/`
 
-8. Para los archivos .BIN seguiremos el mismo método pero necesitaremos el archivo dial2img.py en la misma ubicación. 
-
-9. El proceso será igual pero los comandos cambian; para descompilar usaremos: python.exe dial2img.py -u -i zyt.bin
-
-10. Para compilar: Python.exe dial2img.py -i zyt.bin -p
+Todos los archivos generados se mueven automáticamente a la carpeta `old`
