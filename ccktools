@@ -65,7 +65,7 @@ clear
   fi
   echo "-----"
   echo "----- ${fullname} "
-  filedir=watchfaces/build_${filename}/${workingtype}
+  filedir=watchfaces/build_${filename}/
   echo "----- ${filedir} "
   if [[ ! -d ${filedir} ]]; then
     echo "----- Creando ${filedir}"
@@ -83,7 +83,7 @@ mv ${filename}_*.bin old
 ./dial2img.py -i ${fullname} -p
 echo \"renombrado a ${filename}_\${current_time}.${extension}\"
 mv ${fullname}.new ${filename}_\${current_time}.${extension}
-adb push ${filename}_${current_time}.bin /sdcard/Download/
+adb push ${filename}_\${current_time}.bin /sdcard/Download/
 " >> ${filedir}/compilar
     chmod +x ${filedir}/dial2img.py
     chmod +x ${filedir}/descompilar
