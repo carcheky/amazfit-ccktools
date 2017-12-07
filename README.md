@@ -1,23 +1,15 @@
-### `trabajando en un proceso más simple`
+
 
 
 
 # amazfit-ccktools
 
 
-Ejecutando el commando `./ccktools` podrá descargar/reinstalar las dependencias necesarias
+1) Sitúa el archivo `*.bin` que escojas en la carpeta `./watchfaces/` (si no existe, créala)
+2) Abre el terminal y navega hasta la carpeta donde se ubica el archivo `ccktools` y ejecútalo `chmod +x ccktools;./ccktools;`
 
+Esto, creará dentro de watchfaces una carpeta llamada `build_nombredetubin`, copiará el bin dentro y lo descomprimirá (también te abrirá un terminal situado en la carpeta recién creada).
 
-Una vez añadido un `*.bin` a la carpeta `./watchfaces/`, ejecutar el comando `./ccktools' y usar la opción `4` para generar un nuevo proyecto dentro de la carpeta `./watchfaces/`
+Una vez editados los recursos, en este nuevo terminal, ejecutamos: `./compilar`
 
-Cualquiera de estos proyectos debería funcionar de forma independiente, sin necesidad de estar dentro de `./watchfaces/`.
-
-
-Al crearse un proyecto nuevo, se genera una carpeta con el bin descomprimido (donde editar las imágennes)
-
-Una vez editadas las imágenes, en el terminal, navegar hasta la carpeta donde se encuentra el archivo `./compilar` y ejecutar `./compilar`.
-
-
-Si tienes adb (tambien funciona con adb sobre red si antes te conectas con `adb connect ip:port`, copiará el nuevo archivo directamente a tu teléfono usando adb push `adb push nombre_del_bin_.bin /sdcard/Download/`
-
-Todos los archivos generados se mueven automáticamente a la carpeta `old`
+Si estamos conectados por adb a nuestro teléfono, nos lo copiará a nuestra carpeta /sdcard/Download, si no es así, ignorar el error
