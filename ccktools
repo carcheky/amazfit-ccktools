@@ -1,45 +1,11 @@
 #!/bin/bash
-error_flag=0
-
-ccktools_download(){
-	if [[ -d "dependencies" ]]; then
-		echo "------ "
-		echo "------ las dependencias ya se habían descargado"
-		echo "------ para volver a descargarlas, ejecute de nuevo este script"
-		echo "------ "
-	fi
-	if [[ ! -d "dependencies" ]]; then
-		echo "------ "
-		echo "------ descargando dependencias"
-		echo "------ "
-		mkdir dependencies
-		git clone https://github.com/amazfitbip/tools.git dependencies/amazfitbip/tools
-		chmod +x dependencies/*.py
-	fi
-	if [[ ! -d "watchfaces" ]]; then
-		mkdir watchfaces
-	fi
-}
-
-ccktools_delete(){
-	echo "------ "
-	echo "------ borrando dependencias"
-	echo "------ "
-	rm -fr tools
-	rm -fr dependencies
-}
-
-ccktools_reinstall(){
-	ccktools_delete
-	ccktools_download
-}
 
 ccktools_newproject(){
 clear
   echo "Buscando archivos bin en la carpeta watchfaces (solo trabajaré con el primero que encuentre)"
   cd watchfaces
   nombredelarchivo=(*.bin)
-  echo ${nombredelarchivo[0]} 
+  echo ${nombredelarchivo[0]}
   cd ..
   if [[ ! -f watchfaces/${nombredelarchivo} ]]; then
   	echo "no existe"
@@ -71,13 +37,13 @@ clear
     echo "----- Creando ${filedir}"
     mkdir -p ${filedir}/
     mv watchfaces/${fullname} ${filedir}/
-    cp dependencies/amazfitbip/tools/dial2img.py ${filedir}/
+    cp dependencies/dial2img.py ${filedir}/
     echo "#!/bin/bash
 ./dial2img.py -u -i ${fullname}" >> ${filedir}/descompilar
     echo "#!/bin/bash
 current_time=\$(\date \"+%Y.%m.%d-%H.%M.%S\")
 if [[ ! -d old ]]; then
-	mkdir old		
+	mkdir old
 fi
 mv ${filename}_*.bin old
 ./dial2img.py -i ${fullname} -p
@@ -98,47 +64,15 @@ adb push ${filename}_\${current_time}.bin /sdcard/Download/
   echo ""
   cd ${filedir}
   open .
+  open -a Terminal "`pwd`"
   ./descompilar
 }
 
-ccktools_help(){
-	clear
-	echo "------------------------------------------------------------------------------ "
-	PS3='Escoge tu opción: '
-	options=("Descargar dependencias" "Borrar dependencias" "Borrar y descargar de nuevo las dependencias" "Empezar nuevo proyecto" "Quit")
-	select opt in "${options[@]}"
-	do
-	    case $opt in
-	        "Descargar dependencias")
-	            echo "Descargando dependencias"
-							ccktools_download
-	            break
-	            ;;
-	        "Borrar dependencias")
-	            echo "Borrando dependencias"
-							ccktools_delete
-	            break
-	            ;;
-	        "Borrar y descargar de nuevo las dependencias")
-	            echo "Reinstalando dependencias"
-							ccktools_reinstall
-	            break
-	            ;;
-	        "Empezar nuevo proyecto")
-	            echo "Creando nuevo proyecto"
-							ccktools_newproject
-	            break
-	            ;;
-	        "Quit")
-	            break
-	            ;;
-	        *) echo invalid option;;
-	    esac
-	done
+ccktools_auto(){
+  echo "----- Modo automático"
+  ccktools_newproject
 }
-ccktools_help
 
-
-
+ccktools_auto
 
 
